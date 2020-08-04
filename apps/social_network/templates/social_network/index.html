@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Home</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous">
+</script>
+{% endblock%}
+
+
+{% block content %}
+<h3>The Social Network</h3>
+<div class="container">
+    <h4>Social Network</h4>
+</div>
+<form action="/register" method="post">
+  <h4>Register for the Social Network</h4>
+  {% csrf_token %}
+  <p>First Name: <input type="text" name="first_name"></p>
+  <p>Last Name: <input type="text" name="last_name"></p>
+  <p>Email: <input type="text" name="email"></p>
+  <p>Password: <input type="password" name="password"></p>
+  <p>Confirm Password: <input type="password" name="password_confirm"></p>
+  <input type="submit" name="submit" value="Register">
+</form>
+<br>
+{% endblock %}

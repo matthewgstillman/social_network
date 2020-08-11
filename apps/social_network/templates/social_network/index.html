@@ -27,4 +27,11 @@
   <input type="submit" name="submit" value="Register">
 </form>
 <br>
+<h4>Already a Member? Login below</h4>
+<form action="/login" method="post">
+  {% csrf_token %}
+  <p>Email: <input type="text" name="email"></p>
+  <p>Password: <input type="password" name="password"></p>
+  <input type="submit" name="submit" value="Login">
+</form>
 {% endblock %}

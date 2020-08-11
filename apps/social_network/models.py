@@ -1,11 +1,23 @@
 from django.db import models
 import re, os, binascii, bcrypt
-# import md5
-
 NAME_REGEX =re.compile('^[A-z]+$')
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 class UserManager(models.Manager):
+
+    def login(self, postData):
+        messages = []
+        print("In the motherfucking method!")
+        if User.objects.filter(email=postData['email']):
+            # encode the password to a specific format since the above email is registered
+            login_pw = postData['password'].encode('utf-8')
+            # encode the registered user's password from database to a specific format
+            db_pw = User.objects.get(email=postData['email']).password.encode('utf-8')
+            if not bcrypt.checkpw(login_pw, db_pw):
+                messages.append("Password is Incorrect")
+            else:
+                messages.append("Username has already been registered!")
+        return messages
 
     def register(self, postData):
             print (" In the registration process")
@@ -43,20 +55,18 @@ class UserManager(models.Manager):
             for user in user_list:
                 print(user.email)
             if user_list:
-                messages.append("Error! Email is alread y in the system!")
+                messages.append("Error! Email is already in the system!")
             if not messages:
                 print("No messages")
-                password = password.encode()
                 salt = bcrypt.gensalt()
-                hashed_pw = bcrypt.hashpw(password, salt)
-                # password = password
-                print("Create User")
-                print(hashed_pw)
-                #Added Picture field for user
-                User.objects.create(first_name=first_name, last_name=last_name, email=email, password=hashed_pw)
+                hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                print("Hashed Password is a {}".format(type(hashed_pw)))
+                #HAD TO DECODE PASSWORD
+                u = User.objects.create(first_name=first_name, last_name=last_name, email=email, password=hashed_pw.decode())
                 print(User.objects.all())
-                return None
-            return messages
+                return [True, u]
+            else:
+                return [False, messages]
 
 class User(models.Model):
     first_name = models.CharField(max_length=38)
@@ -67,7 +77,7 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
+    
 
 def __unicode__(self):
-    return(first_name, last_name, email, password)
-
+    return(self.first_name, self.last_name, self.email, self.password)

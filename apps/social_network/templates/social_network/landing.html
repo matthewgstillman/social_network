@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>The Social Network</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous">
+</script>
+{% endblock%}
+
+
+{% block content %}
+<h3>The Social Network</h3>
+<div class="container">
+    <h4>Social Network</h4>
+</div>
+<h4>Welcome {{ session_name }}</h4>
+{% for user in users %}
+  <h5>{{user.first_name}} {{user.last_name}}</h5>
+  <h5>{{user.email}}</h5>
+  <h6>{{user.password}}</h6>
+  <br>
+{% endfor %}
+<a href="/delete">Delete Users</a>
+<a href="/">Log Out</a>
+
+<br>
+{% endblock %}
